@@ -56,6 +56,12 @@ sub transform {
     $new_zoom = ($self->ctx->view($class) || die "There is no view '$class'")
       ->transform($self, $new_zoom, %conf);
 
+    my @style = ();
+    $new_zoom = $new_zoom
+      ->select('style')
+      ->collect({into=>\my @style})
+      ->run;
+
     $zoom = $fb->replace($new_zoom);
 
     $self->ctx->log->debug("transforming completed")
