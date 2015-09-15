@@ -46,7 +46,8 @@ sub transform {
       }
     })->visit(%conf);
 
-    $self->ctx->log->debug("transforming class $class ($uuid) in ${\$self->template}") if ref($self->ctx)->debug;
+    $self->ctx->log->debug("transforming class $class ($uuid) in ${\$self->template}")
+      if ref($self->ctx)->debug;
 
     $fb->collect({into=>\my @body})->run;
     my $new_zoom =  HTML::Zoom->new({zconfig=>$fb->_zconfig})
@@ -57,7 +58,8 @@ sub transform {
 
     $zoom = $fb->replace($new_zoom);
 
-    $self->ctx->log->debug("transforming completed") if ref($self->ctx)->debug;
+    $self->ctx->log->debug("transforming completed")
+      if ref($self->ctx)->debug;
   }
 
   return $zoom->select("*[data-lace-uuid]")

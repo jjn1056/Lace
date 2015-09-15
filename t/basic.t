@@ -29,11 +29,11 @@ use Test::Most;
 
   sub page :Local Args(0) {
     my ($self, $c) = @_;
-     $c->view->send_http_ok({
-         title => "first page",
-         header => "Summary",
-         body => "Summary Body goes here",
-       });
+    $c->view->send_http_ok({
+      title => "first page",
+      header => "Summary",
+      body => "Summary Body goes here",
+    });
   }
 
   package MyApp;
@@ -58,21 +58,15 @@ use Catalyst::Test 'MyApp';
   warn $res->content;
 }
 
-
-
 {
   ok my $res = request '/now';
   warn $res->content;
 }
 
-
 done_testing;
-
-MyApp->to_app;
 
 __END__
 
-s
   $c->view->data->set(title=>"Hello World");
 
   $c->view->id('page')->title("Hello World");

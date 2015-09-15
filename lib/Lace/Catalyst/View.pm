@@ -120,7 +120,6 @@ sub find_template_paths {
 
 sub build_per_context_instance {
   my ($self, $c, @args) = @_;
-  #use Devel::Dwarn;  Dwarn @args;
   return Lace::Catalyst::View::_PerRequest->new(
     parent_view=>$self,
     ctx=>$c);
