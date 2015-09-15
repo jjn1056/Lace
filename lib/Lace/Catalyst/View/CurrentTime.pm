@@ -1,7 +1,7 @@
-package Lace::Catalyst::Model::CurrentTime;
+package Lace::Catalyst::View::CurrentTime;
 
 use Moose;
-extends 'Catalyst::Model';
+extends 'Catalyst::View';
 
 sub transform {
   my ($self, $view, $zoom) = @_;

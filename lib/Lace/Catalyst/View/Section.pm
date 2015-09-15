@@ -1,9 +1,7 @@
-package Lace::Catalyst::Model::Section;
+package Lace::Catalyst::View::Section;
 
 use Moo;
-use HTML::Zoom;
-
-extends 'Catalyst::Model';
+extends 'Catalyst::View';
 
 sub transform {
   my ($self, $view, $zoom, %args) = @_;

@@ -10,15 +10,15 @@ use JSONY;
 extends 'Catalyst::View';
 with 'Catalyst::Component::InstancePerContext';
 
-our @DEFAULT_MODELS = (qw/
+our @DEFAULT_COMPONENTS = (qw/
   Lace::Catalyst::Model::ViewData
-  Lace::Catalyst::Model::Value
-  Lace::Catalyst::Model::Surround
-  Lace::Catalyst::Model::Include
-  Lace::Catalyst::Model::Page
-  Lace::Catalyst::Model::Section
-  Lace::Catalyst::Model::OrderedList
-  Lace::Catalyst::Model::CurrentTime/);
+  Lace::Catalyst::View::Value
+  Lace::Catalyst::View::Surround
+  Lace::Catalyst::View::Include
+  Lace::Catalyst::View::Page
+  Lace::Catalyst::View::Section
+  Lace::Catalyst::View::OrderedList
+  Lace::Catalyst::View::CurrentTime/);
  
 has _map => (is=>'ro', required=>1);
 
@@ -36,12 +36,12 @@ sub COMPONENT {
     $app->log->debug( "Loaded Lace Documents\n" . $t->draw . "\n" );
   }
 
-  $class->inject_default_models($app, @DEFAULT_MODELS);
+  $class->inject_default_components($app, @DEFAULT_COMPONENTS);
 
   return $class->new($app, $args);
 }
 
-sub inject_default_models {
+sub inject_default_components {
   my ($class, $app, @models) = @_;
   foreach my $model(@models) {
     $app->setup_injected_component(

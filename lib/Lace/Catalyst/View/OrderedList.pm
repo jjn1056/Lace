@@ -1,7 +1,7 @@
-package Lace::Catalyst::Model::OrderedList;
+package Lace::Catalyst::View::OrderedList;
 
 use Moo;
-extends 'Catalyst::Model';
+extends 'Catalyst::View';
 
 sub transform {
   my ($self, $view, $zoom, %args) = @_;

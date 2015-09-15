@@ -53,7 +53,7 @@ sub transform {
     my $new_zoom =  HTML::Zoom->new({zconfig=>$fb->_zconfig})
       ->from_events(\@body);
 
-    $new_zoom = ($self->ctx->model($class) || die "There is no model '$class'")
+    $new_zoom = ($self->ctx->view($class) || die "There is no view '$class'")
       ->transform($self, $new_zoom, %conf);
 
     $zoom = $fb->replace($new_zoom);

@@ -1,7 +1,7 @@
-package Lace::Catalyst::Model::Include;
+package Lace::Catalyst::View::Include;
 
 use Moose;
-extends 'Catalyst::Model';
+extends 'Catalyst::View';
 
 sub transform {
   my ($self, $view, $zoom, %args) = @_;

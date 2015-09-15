@@ -1,7 +1,7 @@
-package Lace::Catalyst::Model::Value;
+package Lace::Catalyst::View::Value;
 
 use Moo;
-extends 'Catalyst::Model';
+extends 'Catalyst::View';
 
 sub transform {
   my ($self, $view, $zoom, %args) = @_;

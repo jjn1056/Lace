@@ -1,7 +1,7 @@
 use Test::Most;
 
 {
-  package MyApp::Model::UserNameList;
+  package MyApp::View::UserNameList;
 
   use Moo;
   extends 'Catalyst::Model';
