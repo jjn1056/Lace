@@ -31,9 +31,7 @@ sub transform {
 
   foreach my $uuid (sort keys %uuid) {
 
-    $self->ctx->log->debug("Looking for $uuid") if ref($self->ctx)->debug;
-
-    my $node = $zoom->select("*[data-lace-uuid=$uuid]");
+    my $fb = $zoom->select("*[data-lace-uuid=$uuid]");
     my $class = $uuid{$uuid}{class};
     my %conf =  %{$uuid{$uuid}{conf}};
 
@@ -50,13 +48,17 @@ sub transform {
 
     $self->ctx->log->debug("transforming class $class ($uuid) in ${\$self->template}") if ref($self->ctx)->debug;
 
-    $zoom = ($self->ctx->model($class) || die "There is no model '$class'")
-      ->transform($self, $node, %conf);
+    $fb->collect({into=>\my @body})->run;
+    my $new_zoom =  HTML::Zoom->new({zconfig=>$fb->_zconfig})
+      ->from_events(\@body);
+
+    $new_zoom = ($self->ctx->model($class) || die "There is no model '$class'")
+      ->transform($self, $new_zoom, %conf);
+
+    $zoom = $fb->replace($new_zoom);
+
     $self->ctx->log->debug("transforming completed") if ref($self->ctx)->debug;
-
   }
-
-  #return $zoom;
 
   return $zoom->select("*[data-lace-uuid]")
     ->remove_attribute('data-lace-uuid');

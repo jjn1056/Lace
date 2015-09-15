@@ -4,10 +4,8 @@ use Moo;
 extends 'Catalyst::Model';
 
 sub transform {
-  my ($self, $view, $fb, %args) = @_;
-  return $fb->repeat([ sub {
-    $_->select('title')->replace_content($args{title});
-      }]);
+  my ($self, $view, $zoom, %args) = @_;
+  return $zoom->select('title')->replace_content($args{title})
 }
 
 1;

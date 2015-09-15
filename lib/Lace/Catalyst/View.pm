@@ -1,13 +1,9 @@
 package Lace::Catalyst::View;
 
-use HTML::Zoom;
-use HTML::Zoom::FilterBuilder::Template;
-use HTML::Zoom::FilterBuilder::Fill;
-use HTML::Zoom::FilterBuilder::GetAttribute;
-use HTML::Zoom::FilterBuilder::ApplyResultSet;
-
 use Moo;
+use HTML::Zoom;
 use Lace::Catalyst::View::_PerRequest;
+use Lace::HTML::Zoom::FilterBuilder;
 use Catalyst::Utils;
 use JSONY;
 
@@ -68,7 +64,7 @@ sub create_documents {
 
     # First, find all data-lace-class and assign a 'uuid'
     my @uuids = ();
-    my $zoom = HTML::Zoom->from_file("$_")
+    my $zoom = HTML::Zoom->new({zconfig=>{filter_builder=>'Lace::HTML::Zoom::FilterBuilder'}})->from_file("$_")
       ->select('*[data-lace-class]')
       ->transform_attribute( 'data-lace-uuid' => sub { my $uuid = $class->next_uuid; push @uuids, $uuid; $uuid;  })
       ->memoize;
@@ -106,11 +102,6 @@ sub create_documents {
     $match_path => [$zoom, \%info];
     
   } @templates;
-
-  use Devel::Dwarn;
-  Dwarn keys %map;
-  Dwarn map {$_->[1] } values %map;
-  Dwarn map {$_->[0]->to_html } values %map;
 
   return %map;
 }

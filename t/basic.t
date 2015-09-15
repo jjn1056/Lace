@@ -7,8 +7,8 @@ use Test::Most;
   extends 'Catalyst::Model';
 
   sub transform {
-    my ($self, $view, $fb, %args) = @_;
-    return $fb->fill('*[id=name]' => $args{names} );
+    my ($self, $view, $zoom, %args) = @_;
+    return $zoom->select('ul')->fill('*[id=name]' => $args{names} );
   }
 
   package MyApp::Controller::Root;
@@ -58,16 +58,21 @@ use Catalyst::Test 'MyApp';
   warn $res->content;
 }
 
+
+
 {
   ok my $res = request '/now';
   warn $res->content;
 }
 
 
-
 done_testing;
 
+MyApp->to_app;
+
 __END__
+
+s
   $c->view->data->set(title=>"Hello World");
 
   $c->view->id('page')->title("Hello World");
