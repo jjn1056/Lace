@@ -56,12 +56,6 @@ sub transform {
     $new_zoom = ($self->ctx->view($class) || die "There is no view '$class'")
       ->transform($self, $new_zoom, %conf);
 
-    my @style = ();
-    $new_zoom = $new_zoom
-      ->select('style')
-      ->collect({into=>\my @style})
-      ->run;
-
     $zoom = $fb->replace($new_zoom);
 
     $self->ctx->log->debug("transforming completed")
@@ -112,7 +106,42 @@ sub send {
   $self->ctx->res->headers->push_headers(@headers) if @headers;
   
   my $lace = $self->retrieve_document($self->template);
-  
+
+  # make all the styles and scripts together
+  my $style_cnt = 0; my $script_cnt = 0;
+  $lace = $lace
+     ->select('style')
+    ->transform_attribute( 'data-uuid' => sub { $style_cnt++})
+     ->select('script')
+    ->transform_attribute( 'data-uuid' => sub { $script_cnt++})
+    ->memoize;
+
+  foreach my $cnt(0..$style_cnt) {
+    my @style;
+    $lace = $lace
+      ->select("style[data-uuid=$cnt]")
+      ->collect({into=>\@style})
+      ->memoize
+      ->select('head')
+      ->append_content(\@style)
+  }
+
+  foreach my $cnt(0..$script_cnt) {
+    my @script;
+    $lace = $lace
+      ->select("script[data-uuid=$cnt]")
+      ->collect({into=>\@script})
+      ->memoize
+      ->select('head')
+      ->append_content(\@script)
+  }
+
+  $lace = $lace
+    ->select('style[data-uuid]')
+    ->remove_attribute('data-uuid')
+    ->select('script[data-uuid]')
+    ->remove_attribute('data-uuid');
+
   $self->ctx->res->content_type('text/html');
   
   if($self->ctx->res->has_body) {

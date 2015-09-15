@@ -63,9 +63,11 @@ use Catalyst::Test 'MyApp';
   warn $res->content;
 }
 
+
 done_testing;
 
 __END__
+
 
   $c->view->data->set(title=>"Hello World");
 
